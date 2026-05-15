@@ -30,3 +30,40 @@
 defineProps({ laporanList: Array, pegawaiKenderaan: String })
 const formatTarikhPanjang = (str) => str ? new Date(str).toLocaleDateString('ms-MY', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit', hour12: false }) : '-'
 </script>
+
+<style scoped>
+@media print {
+  /* Hilangkan margin default browser */
+  @page {
+    size: A4 landscape; /* Buku log biasanya memanjang */
+    margin: 10mm;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  /* Elakkan kandungan terpotong di tengah jalan */
+  .print-page {
+    page-break-after: always;
+    page-break-inside: avoid;
+    width: 277mm; /* Lebar tepat A4 landscape - margin */
+    margin: 0 auto;
+    color: black !important;
+  }
+
+  /* Pastikan border table jelas bila print */
+  .print-table, .print-table th, .print-table td {
+    border: 1px solid black !important;
+    color: black !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* UI di skrin monitor */
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; }
+</style>

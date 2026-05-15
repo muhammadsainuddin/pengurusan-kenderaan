@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-slate-100 font-sans text-slate-900 selection:bg-slate-300">
     
-    <header class="bg-white border-b-4 border-slate-800 sticky top-0 z-50 shadow-sm">
+    <header class="bg-white border-b-4 border-slate-800 sticky top-0 z-50 shadow-sm print:hidden">
       
       <div class="flex justify-between items-center px-4 lg:px-8 py-3 border-b border-slate-200">
         
@@ -75,11 +75,8 @@
       <PergerakanAdmin v-if="activeTab === 'pergerakan'" />
       <LaporanAdmin v-if="activeTab === 'laporan'" />
       
-      <div v-if="['kenderaan', 'pengguna'].includes(activeTab)" class="text-center py-32 bg-white border border-slate-300 shadow-sm w-full rounded-sm">
-        <p class="text-4xl mb-4 opacity-80">⚙️</p>
-        <h3 class="text-xl font-black text-slate-800 uppercase tracking-widest">Modul {{ activeTab }}</h3>
-        <p class="text-xs text-slate-500 mt-2 font-bold uppercase tracking-wider">Status: Modul belum dicipta</p>
-      </div>
+      <KenderaanAdmin v-if="activeTab === 'kenderaan'" />
+      <UsersAdmin v-if="activeTab === 'pengguna'" />
 
     </main>
 
@@ -96,8 +93,8 @@ import PergerakanAdmin from '../components/admin/PergerakanAdmin.vue'
 import LaporanAdmin from '../components/admin/LaporanAdmin.vue'
 
 // 2. KEKALKAN KOMEN PADA KOMPONEN YANG BELUM WUJUD UNTUK ELAK 'FILE NOT EXIST'
-// import KenderaanAdmin from '../components/admin/KenderaanAdmin.vue'
-// import UsersAdmin from '../components/admin/UsersAdmin.vue'
+import KenderaanAdmin from '../components/admin/KenderaanAdmin.vue'
+import UsersAdmin from '../components/admin/UsersAdmin.vue'
 
 const router = useRouter()
 const activeTab = ref('dashboard')
