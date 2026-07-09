@@ -3,8 +3,7 @@ import axios from 'axios'
 import { globalState } from '../store' // Import state yang kita baru buat
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api', // Pastikan baseURL anda betul
-  //baseURL: 'https://kenderaan.msdev.com.my/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 })
 
 // ==========================================

@@ -1,66 +1,110 @@
 <template>
-  <div class="space-y-6 animate-fade-in">
-    <div class="flex justify-between items-center px-1">
-      <h2 class="text-xl font-black text-slate-800 uppercase tracking-widest">Pengurusan Aset</h2>
-      <button @click="bukaModalTambah" class="bg-slate-800 text-white font-black text-[11px] uppercase tracking-widest px-6 py-3.5 rounded-sm shadow-md transition-all">
-        + Daftar Aset Baharu
+  <div class="space-y-5">
+
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div>
+        <h2 class="text-[13px] font-bold text-[#003479] uppercase tracking-wide">Pengurusan Aset</h2>
+        <p class="text-xs text-[#5A6672] mt-0.5">Senarai dan pengurusan kenderaan stesen</p>
+      </div>
+      <button @click="bukaModalTambah" class="inline-flex items-center gap-2 bg-[#003479] hover:bg-[#002560] text-white text-xs font-semibold px-4 py-2.5 rounded transition-colors self-start sm:self-auto">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Daftar Aset Baharu
       </button>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      <div v-for="k in senaraiKenderaan" :key="k.id" class="bg-white border-2 border-slate-200 p-5 rounded-sm shadow-sm relative flex flex-col">
-        <div class="flex justify-between items-start mb-4">
-          <div>
-            <h3 class="text-xl font-black text-slate-900 leading-none">{{ k.no_plat }}</h3>
-            <p class="text-[10px] font-bold text-slate-500 uppercase mt-1">{{ k.model }} ({{ k.kategori }})</p>
+    <!-- Asset Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div v-for="k in senaraiKenderaan" :key="k.id" class="bg-white border border-[#DFE3E8] rounded shadow-sm flex flex-col overflow-hidden">
+
+        <!-- Card Top Strip (gov blue) -->
+        <div class="h-1.5" :class="k.status === 'Tersedia' ? 'bg-[#10B981]' : k.status === 'Dalam Servis' ? 'bg-[#F59E0B]' : 'bg-[#003479]'"></div>
+
+        <div class="p-5 flex flex-col flex-1">
+          <!-- Header -->
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-[#1A2332] leading-none tracking-tight">{{ k.no_plat }}</h3>
+              <p class="text-xs text-[#5A6672] font-medium mt-1 uppercase tracking-wide">{{ k.model }} · {{ k.kategori }}</p>
+            </div>
+            <span :class="['text-xs font-semibold px-2.5 py-1 rounded-full', k.status === 'Tersedia' ? 'bg-[#D1FAE5] text-[#065F46]' : k.status === 'Dalam Servis' ? 'bg-[#FEF3C7] text-[#92400E]' : 'bg-[#DBEAFE] text-[#1E40AF]']">
+              {{ k.status }}
+            </span>
           </div>
-          <span :class="['text-[9px] font-black px-2 py-1 rounded-sm uppercase border', k.status === 'Tersedia' ? 'border-green-600 text-green-700 bg-green-50' : 'border-red-600 text-red-700 bg-red-50']">
-            {{ k.status }}
-          </span>
-        </div>
 
-        <div class="bg-slate-50 p-3 mb-5 border border-slate-200 rounded-sm">
-          <p class="text-[9px] font-black text-slate-400 uppercase mb-1">Odometer Terkini</p>
-          <p class="text-lg font-black text-slate-800">{{ k.odo_terkini || 0 }} KM</p>
-        </div>
+          <!-- Odometer -->
+          <div class="bg-[#F8FAFC] border border-[#DFE3E8] rounded p-3 mb-4">
+            <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Odometer Terkini</p>
+            <p class="text-lg font-bold text-[#1A2332]">{{ (k.odo_terkini || 0).toLocaleString() }} <span class="text-sm font-medium text-[#5A6672]">km</span></p>
+          </div>
 
-        <div class="mt-auto flex gap-2">
-          <button @click="bukaModalEdit(k)" class="flex-1 bg-slate-800 text-white text-[10px] font-black py-2 uppercase rounded-sm hover:bg-slate-900 transition-colors">Edit Aset</button>
-          <button @click="tukarStatusServis(k)" class="flex-1 bg-amber-50 text-amber-700 text-[10px] font-black py-2 uppercase border border-amber-200 rounded-sm">
-            {{ k.status === 'Dalam Servis' ? 'Selesai Servis' : 'Hantar Bengkel' }}
-          </button>
-          <button @click="padamAset(k.id)" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2 border border-red-200 rounded-sm">🗑️</button>
+          <!-- Action Buttons -->
+          <div class="mt-auto flex gap-2">
+            <button @click="bukaModalEdit(k)" class="flex-1 bg-white border border-[#003479] hover:bg-[#EEF3FB] text-[#003479] text-xs font-semibold py-2 rounded transition-colors">
+              Edit
+            </button>
+            <button @click="tukarStatusServis(k)" class="flex-1 text-xs font-semibold py-2 rounded border transition-colors" :class="k.status === 'Dalam Servis' ? 'bg-[#D1FAE5] border-[#10B981] text-[#065F46] hover:bg-green-100' : 'bg-[#FEF9C3] border-[#FDE047] text-[#713F12] hover:bg-yellow-100'">
+              {{ k.status === 'Dalam Servis' ? 'Selesai Servis' : 'Hantar Bengkel' }}
+            </button>
+            <button @click="padamAset(k.id)" class="bg-white border border-[#DFE3E8] hover:border-[#C0392B] hover:bg-red-50 text-[#C0392B] px-3 py-2 rounded transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
-    <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-      <div class="bg-white border-2 border-slate-800 p-8 w-full max-w-md shadow-2xl animate-slide-up">
-        <h2 class="text-lg font-black uppercase tracking-widest mb-6">{{ isEdit ? 'Kemaskini Aset' : 'Daftar Aset Baharu' }}</h2>
-        <div class="space-y-4">
+    <!-- Modal: Tambah / Edit Aset -->
+    <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+      <div class="bg-white w-full max-w-md rounded shadow-xl">
+
+        <div class="px-5 py-4 bg-[#003479] rounded-t">
+          <h3 class="text-sm font-bold text-white">{{ isEdit ? 'Kemaskini Aset' : 'Daftar Aset Baharu' }}</h3>
+        </div>
+
+        <div class="p-5 space-y-4">
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">No. Pendaftaran</label>
-            <input v-model="form.no_plat" type="text" class="w-full border-2 border-slate-200 focus:border-slate-800 p-3 font-bold text-sm outline-none" />
+            <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">No. Pendaftaran</label>
+            <input v-model="form.no_plat" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Cth: WA1234B" />
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Model / Jenis</label>
-            <input v-model="form.model" type="text" class="w-full border-2 border-slate-200 focus:border-slate-800 p-3 font-bold text-sm outline-none" />
+            <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">Model / Jenis</label>
+            <input v-model="form.model" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Cth: Toyota Hilux" />
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Kategori Aset</label>
-            <select v-model="form.kategori" class="w-full border-2 border-slate-200 focus:border-slate-800 p-3 font-bold text-sm outline-none">
+            <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">Kategori Aset</label>
+            <select v-model="form.kategori" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors bg-white">
               <option value="Kereta">Kereta</option>
               <option value="Motorsikal">Motorsikal</option>
               <option value="Bot">Bot / Marin</option>
             </select>
           </div>
-          <button @click="simpanAset" class="w-full bg-slate-800 text-white font-black py-4 uppercase tracking-widest rounded-sm mt-4 hover:bg-slate-900">
-            {{ isEdit ? 'Simpan Perubahan' : 'Daftar Sekarang' }}
-          </button>
-          <button @click="showModal = false" class="w-full bg-slate-100 text-slate-600 font-black py-3 uppercase tracking-widest rounded-sm">Batal</button>
+
+          <div class="border-t border-[#DFE3E8] pt-4">
+            <p class="text-xs font-bold text-[#003479] uppercase tracking-wide mb-3">Kad Rasmi Kenderaan</p>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">No. Siri Kad TnG</label>
+                <input v-model="form.no_siri_kad_tng" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Cth: TNG-XXXX-XXXX" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">No. Siri Kad Inden</label>
+                <input v-model="form.no_siri_kad_minyak" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Cth: KAD-XXXX-XXXX" />
+              </div>
+            </div>
+            <p class="text-[11px] text-[#5A6672] mt-2">Kosongkan jika kenderaan ini tiada kad rasmi. Nombor ini akan direkod secara automatik setiap kali staf mengambil kad.</p>
+          </div>
+
+          <div class="flex gap-3 pt-2 border-t border-[#DFE3E8]">
+            <button @click="simpanAset" class="flex-1 bg-[#003479] hover:bg-[#002560] text-white font-semibold text-sm py-2.5 rounded transition-colors">
+              {{ isEdit ? 'Simpan Perubahan' : 'Daftar Sekarang' }}
+            </button>
+            <button @click="showModal = false" class="flex-1 bg-[#F4F6FA] hover:bg-[#DFE3E8] text-[#5A6672] font-semibold text-sm py-2.5 rounded transition-colors">Batal</button>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -72,7 +116,7 @@ const senaraiKenderaan = ref([])
 const showModal = ref(false)
 const isEdit = ref(false)
 const currentId = ref(null)
-const form = ref({ no_plat: '', model: '', kategori: 'Kereta' })
+const form = ref({ no_plat: '', model: '', kategori: 'Kereta', no_siri_kad_tng: '', no_siri_kad_minyak: '' })
 
 const fetchAset = async () => {
   const res = await api.get('/admin/dashboard-summary')
@@ -81,14 +125,14 @@ const fetchAset = async () => {
 
 const bukaModalTambah = () => {
   isEdit.value = false;
-  form.value = { no_plat: '', model: '', kategori: 'Kereta' };
+  form.value = { no_plat: '', model: '', kategori: 'Kereta', no_siri_kad_tng: '', no_siri_kad_minyak: '' };
   showModal.value = true;
 }
 
 const bukaModalEdit = (k) => {
   isEdit.value = true;
   currentId.value = k.id;
-  form.value = { no_plat: k.no_plat, model: k.model, kategori: k.kategori };
+  form.value = { no_plat: k.no_plat, model: k.model, kategori: k.kategori, no_siri_kad_tng: k.no_siri_kad_tng || '', no_siri_kad_minyak: k.no_siri_kad_minyak || '' };
   showModal.value = true;
 }
 

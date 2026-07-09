@@ -1,48 +1,60 @@
 <template>
   <div class="w-full">
     
-    <div v-show="!showModalCetak" class="space-y-4 p-1 animate-fade-in">
-      <div class="flex justify-between items-center">
-        <h3 class="text-[11px] font-black uppercase tracking-widest text-slate-500">Rekod Penggunaan & Baki Kad Touch 'n Go</h3>
-        <button @click="showModalCetak = true" class="bg-slate-800 hover:bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest px-5 py-2.5 rounded-sm shadow-md transition-all flex items-center gap-2 border-2 border-slate-800">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+    <div v-show="!showModalCetak" class="no-print">
+
+      <!-- Sub-header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border-b border-[#DFE3E8]">
+        <div>
+          <h3 class="text-[13px] font-bold text-[#003479] uppercase tracking-wide">Rekod Kad Touch 'n Go (Lampiran B1)</h3>
+          <p class="text-xs text-[#5A6672] mt-0.5">Penggunaan dan baki kad sistem bayaran tol tanpa resit</p>
+        </div>
+        <button @click="showModalCetak = true" class="inline-flex items-center gap-2 bg-[#003479] hover:bg-[#002560] text-white text-xs font-semibold px-4 py-2.5 rounded transition-colors self-start sm:self-auto">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
           Pratonton Lampiran B1
         </button>
       </div>
-      
-      <div class="bg-white border-2 border-slate-800 rounded-sm overflow-hidden shadow-sm">
-        <table class="w-full text-left border-collapse min-w-[1000px]">
-          <thead class="bg-slate-50 border-b-2 border-slate-800">
-            <tr class="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-              <th class="p-4 w-12 text-center">Bil</th>
-              <th class="p-4 w-32">Tarikh Log</th>
-              <th class="p-4">Pemandu / Aset</th>
-              <th class="p-4">Perjalanan (Dari ➔ Ke)</th>
-              <th class="p-4 w-32">Jenis Rekod</th>
-              <th class="p-4 text-right">Baki Kad (RM)</th>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-[#F8FAFC] border-b border-[#DFE3E8]">
+            <tr>
+              <th class="px-4 py-3 text-center text-xs font-semibold text-[#5A6672] uppercase tracking-wide w-10">Bil</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-[#5A6672] uppercase tracking-wide">Tarikh Log</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-[#5A6672] uppercase tracking-wide">No. Siri Kad</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-[#5A6672] uppercase tracking-wide">Pemandu / Aset</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-[#5A6672] uppercase tracking-wide">Perjalanan (Dari ➔ Ke)</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-[#5A6672] uppercase tracking-wide">Jenis Rekod</th>
+              <th class="px-4 py-3 text-right text-xs font-semibold text-[#5A6672] uppercase tracking-wide">Baki Kad (RM)</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-100">
+          <tbody class="divide-y divide-[#F0F2F5]">
             <tr v-if="combinedTngEntries.length === 0">
-              <td colspan="6" class="p-10 text-center text-slate-400 font-bold uppercase tracking-widest text-[10px]">Tiada rekod penggunaan kad TnG dijumpai.</td>
+              <td colspan="7" class="px-4 py-12 text-center text-[#5A6672] text-xs">Tiada rekod penggunaan kad TnG dijumpai.</td>
             </tr>
-            <tr v-for="(e, idx) in combinedTngEntries" :key="idx" class="hover:bg-slate-50 transition-colors">
-              <td class="p-4 text-center text-xs font-bold text-slate-400">{{ idx + 1 }}</td>
-              <td class="p-4 text-xs font-bold text-slate-900">{{ formatTarikh(e.tarikh) }}</td>
-              <td class="p-4">
-                <div class="text-xs font-black uppercase text-slate-800">{{ e.nama_staf }}</div>
-                <div class="text-[10px] font-bold text-slate-400 uppercase">{{ e.no_plat }}</div>
+            <tr v-for="(e, idx) in combinedTngEntries" :key="idx" class="hover:bg-[#F8FAFC] transition-colors">
+              <td class="px-4 py-3 text-center text-xs text-[#5A6672] font-medium">{{ idx + 1 }}</td>
+              <td class="px-4 py-3 text-sm font-medium text-[#1A2332]">{{ formatTarikh(e.tarikh) }}</td>
+              <td class="px-4 py-3 text-sm text-[#1A2332] font-medium">{{ e.no_siri_kad || '—' }}</td>
+              <td class="px-4 py-3">
+                <p class="font-semibold text-[#1A2332] text-sm">{{ e.nama_staf }}</p>
+                <p class="text-xs text-[#003479] font-bold mt-0.5">{{ e.no_plat }}</p>
               </td>
-              <td class="p-4 text-xs font-medium leading-tight">
-                <span class="font-bold text-slate-700">{{ e.dari }}</span> ➔ {{ e.ke }}
+              <td class="px-4 py-3 text-sm text-[#1A2332]">
+                <span class="font-semibold">{{ e.dari }}</span> <span class="text-[#5A6672]">➔</span> {{ e.ke }}
               </td>
-              <td class="p-4">
-                <span :class="['text-[9px] font-black px-2 py-1 rounded-sm uppercase tracking-tighter border', e.is_harian ? 'bg-teal-50 text-teal-700 border-teal-200' : 'bg-purple-50 text-purple-700 border-purple-200']">
+              <td class="px-4 py-3">
+                <span :class="['text-xs font-medium px-2.5 py-1 rounded-full', e.is_harian ? 'bg-[#D1FAE5] text-[#065F46]' : 'bg-[#EDE9FE] text-[#5B21B6]']">
                   {{ e.is_harian ? 'Log Harian' : 'Akhir' }}
                 </span>
+                <span v-if="e.auto_topup" class="ml-1 text-xs font-medium px-2.5 py-1 rounded-full bg-[#FEF3C7] text-[#92400E]">
+                  ⚡ Auto Topup
+                </span>
               </td>
-              <td class="p-4 text-right font-black text-xs text-purple-900 bg-purple-50/30">
+              <td class="px-4 py-3 text-right font-bold text-sm text-[#003479]">
                 RM {{ parseFloat(e.baki || 0).toFixed(2) }}
+                <span v-if="e.baki_sebelum != null" class="block text-[10px] font-normal text-[#5A6672]">drpd RM {{ parseFloat(e.baki_sebelum).toFixed(2) }}</span>
               </td>
             </tr>
           </tbody>
@@ -72,10 +84,10 @@
       <div class="p-8 print:p-0 flex flex-col items-center gap-8 print:block">
         <div v-for="(pageChunk, pageIndex) in paginatedTngList" :key="'tngpage'+pageIndex" class="print-page bg-white w-[297mm] min-h-[210mm] p-10 shadow-2xl relative text-black print:w-full print:min-h-0 print:p-0 print:shadow-none print:m-0">
           
-          <table class="w-full text-center border-collapse border border-black text-[10px] font-medium text-black print-table table-fixed">
+          <table class="w-full text-center border-collapse text-[10px] font-medium text-black print-table table-fixed">
             <thead>
               <tr class="no-border-row bg-white">
-                <th colspan="14" class="p-0 pb-6 text-left font-normal border-none">
+                <th colspan="15" class="p-0 pb-6 text-left font-normal border-none">
                   <div class="flex justify-between items-start text-[10px] font-bold text-black">
                     <div>Pekeliling Perbendaharaan Malaysia</div>
                     <div class="text-right">
@@ -86,10 +98,10 @@
 
                   <div class="text-center mt-6 text-black">
                     <p class="text-[14px] font-bold uppercase">FORMAT BUKU REKOD PERGERAKAN DAN PENGGUNAAN KAD SISTEM BAYARAN TOL TANPA RESIT</p>
-                    
+
                     <div class="flex justify-between items-end mt-8 font-bold text-xs uppercase">
                       <div class="flex items-end gap-2">
-                        <p>NO. KAD / NO. KENDERAAN:</p>
+                        <p>NO. SIRI KAD (NOMBOR KENDERAAN):</p>
                         <div class="border-b-2 border-black w-48 text-left pb-0.5 px-2">
                           <span>{{ filter.kenderaan_id === 'Semua' ? 'SEMUA UNIT' : (kenderaanDipilih?.no_plat || 'SEMUA UNIT') }}</span>
                         </div>
@@ -108,6 +120,7 @@
               <tr class="bg-white uppercase font-bold text-[8px]">
                 <th rowspan="2" class="border border-black p-1.5 w-8">Bil.</th>
                 <th rowspan="2" class="border border-black p-1.5 w-20">Tarikh Kad<br>Diambil</th>
+                <th rowspan="2" class="border border-black p-1.5 w-20">No. Siri<br>Kad</th>
                 <th rowspan="2" class="border border-black p-1.5 w-20">No. Daftar<br>Kenderaan</th>
                 <th colspan="2" class="border border-black p-1.5">Pemandu</th>
                 <th colspan="2" class="border border-black p-1.5">Pegawai Yang<br>Menyerahkan Kad</th>
@@ -132,6 +145,7 @@
               <tr v-for="(row, rIndex) in pageChunk" :key="'tng-row'+rIndex" class="h-12 bg-white">
                 <td class="border border-black p-1 text-[9px]">{{ row ? (pageIndex * 10) + rIndex + 1 : '' }}</td>
                 <td class="border border-black p-1 font-bold">{{ row ? formatTarikhPendek(row.tarikh) : '' }}</td>
+                <td class="border border-black p-1 font-bold text-[9px] uppercase">{{ row && row.no_siri_kad ? row.no_siri_kad : '-' }}</td>
                 <td class="border border-black p-1 font-bold uppercase">{{ row ? row.no_plat : '' }}</td>
                 <td class="border border-black p-1 text-left px-1 leading-tight text-[8px] font-bold uppercase break-words">{{ row ? row.nama_staf : '' }}</td>
                 <td class="border border-black p-1"></td>
@@ -140,7 +154,7 @@
                 <td class="border border-black p-1 font-bold text-[9px] uppercase leading-tight">{{ row ? row.dari : '' }}</td>
                 <td class="border border-black p-1 text-left px-1 leading-tight text-[9px] font-medium break-words uppercase">{{ row ? row.ke : '' }}</td>
                 <td class="border border-black p-1"></td>
-                <td class="border border-black p-1 font-black text-[11px]">{{ row && row.baki ? parseFloat(row.baki).toFixed(2) : '' }}</td>
+                <td class="border border-black p-1 font-black text-[11px]">{{ row && row.baki ? parseFloat(row.baki).toFixed(2) + (row.auto_topup ? '*' : '') : '' }}</td>
                 <td class="border border-black p-1 font-bold">{{ row && !row.is_harian ? formatTarikhPendek(row.tarikh) : '' }}</td>
                 <td class="border border-black p-1 text-left px-1 leading-tight text-[8px] font-bold uppercase break-words">{{ row && !row.is_harian ? pegawaiKenderaan : '' }}</td>
                 <td class="border border-black p-1"></td>
@@ -170,21 +184,38 @@ const kenderaanDipilih = computed(() => props.senaraiKenderaan.find(k => k.id ==
 
 const combinedTngEntries = computed(() => {
   let entries = [];
-  
-  props.laporanList.filter(trip => trip.ambil_kad_tng).forEach(trip => {
+
+  // Papar trip jika kad TnG ditandakan diambil, ATAU jika ada rekod baki
+  // sebenar (staf mungkin catat baki TnG tanpa menandakan togol kad semasa daftar keluar).
+  const adaRekodTng = (trip) =>
+    trip.ambil_kad_tng ||
+    trip.baki_tng !== null ||
+    (trip.senarai_harian && trip.senarai_harian.some(h => h.baki_tng !== null));
+
+  props.laporanList.filter(adaRekodTng).forEach(trip => {
+    // Baki rujukan berjalan — mula dari baki_tng_mula (baki akhir trip sebelum ini),
+    // dikemaskini selepas setiap bacaan supaya auto topup (baki naik drpd rujukan)
+    // dapat dikesan secara automatik sepanjang trip, termasuk log harian berturutan.
+    let bakiRujukan = trip.baki_tng_mula;
+
     // 1. Rekod Log Harian
     if (trip.senarai_harian && trip.senarai_harian.length > 0) {
       trip.senarai_harian.forEach((h, index) => {
         if (h.baki_tng !== null) {
+          const autoTopup = bakiRujukan !== null && parseFloat(h.baki_tng) > parseFloat(bakiRujukan);
           entries.push({
             tarikh: h.tarikh,
             no_plat: trip.no_plat,
+            no_siri_kad: trip.no_siri_kad_tng,
             nama_staf: trip.nama_staf,
             dari: index === 0 ? 'TNPP' : (h.dari_lokasi || 'OPERASI'),
             ke: h.ke_lokasi,
             baki: h.baki_tng,
+            baki_sebelum: bakiRujukan,
+            auto_topup: autoTopup,
             is_harian: true
           });
+          bakiRujukan = h.baki_tng;
         }
       });
     }
@@ -195,13 +226,17 @@ const combinedTngEntries = computed(() => {
       if (trip.senarai_harian && trip.senarai_harian.length > 0) {
         titikMula = trip.senarai_harian[trip.senarai_harian.length - 1].ke_lokasi;
       }
+      const autoTopup = bakiRujukan !== null && parseFloat(trip.baki_tng) > parseFloat(bakiRujukan);
       entries.push({
         tarikh: trip.masa_masuk,
         no_plat: trip.no_plat,
+        no_siri_kad: trip.no_siri_kad_tng,
         nama_staf: trip.nama_staf,
         dari: trip.senarai_harian.length === 0 ? `TNPP ➔ ${trip.destinasi}` : titikMula,
         ke: 'TNPP',
         baki: trip.baki_tng,
+        baki_sebelum: bakiRujukan,
+        auto_topup: autoTopup,
         is_harian: false
       });
     }

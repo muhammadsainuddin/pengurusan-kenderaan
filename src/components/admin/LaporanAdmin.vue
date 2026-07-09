@@ -1,139 +1,170 @@
 <template>
-  <div class="space-y-6 animate-fade-in">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 px-1 no-print">
+  <div class="space-y-5">
+
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-print">
       <div>
-        <h2 class="text-xl font-black text-slate-900 tracking-widest uppercase">Pusat Analitik Laporan</h2>
-        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-1">Sistem Penjanaan Dokumen & Audit Pergerakan</p>
+        <h2 class="text-[13px] font-bold text-[#003479] uppercase tracking-wide">Laporan & Analitik</h2>
+        <p class="text-xs text-[#5A6672] mt-0.5">Penjanaan dokumen dan audit rekod pergerakan</p>
       </div>
-      <button @click="cetakLaporan" class="bg-slate-800 hover:bg-slate-900 text-white font-black text-[11px] uppercase tracking-widest px-6 py-3.5 rounded-sm shadow-md transition-all border-2 border-slate-800 flex items-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+      <button @click="cetakLaporan" class="inline-flex items-center gap-2 bg-[#003479] hover:bg-[#002560] text-white text-xs font-semibold px-4 py-2.5 rounded transition-colors self-start sm:self-auto">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
         Jana Dokumen (PDF)
       </button>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 no-print">
-      <button @click="jenisLaporan = 'buku_log'" :class="btnTabClass(jenisLaporan === 'buku_log')">
-        <span class="text-lg">📄</span>
-        <div class="text-left">
-          <h3 class="text-[11px] font-black uppercase tracking-widest">Buku Log</h3>
-          <p class="text-[9px] font-bold opacity-60">Log Odometer</p>
-        </div>
+    <!-- Jenis Laporan Tabs -->
+    <div class="flex flex-wrap gap-2 no-print">
+      <button @click="jenisLaporan = 'buku_log'" :class="['flex items-center gap-2 px-4 py-2.5 rounded text-xs font-semibold transition-colors border', jenisLaporan === 'buku_log' ? 'bg-[#003479] text-white border-[#003479]' : 'bg-white text-[#5A6672] border-[#DFE3E8] hover:border-[#003479] hover:text-[#003479]']">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Buku Log
       </button>
-      <button @click="jenisLaporan = 'kad_inden'" :class="btnTabClass(jenisLaporan === 'kad_inden')">
-        <span class="text-lg">💳</span>
-        <div class="text-left">
-          <h3 class="text-[11px] font-black uppercase tracking-widest">Kad Inden</h3>
-          <p class="text-[9px] font-bold opacity-60">Bahan Api</p>
-        </div>
+      <button @click="jenisLaporan = 'kad_inden'" :class="['flex items-center gap-2 px-4 py-2.5 rounded text-xs font-semibold transition-colors border', jenisLaporan === 'kad_inden' ? 'bg-[#003479] text-white border-[#003479]' : 'bg-white text-[#5A6672] border-[#DFE3E8] hover:border-[#003479] hover:text-[#003479]']">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        Kad Inden
       </button>
-      <button @click="jenisLaporan = 'kunci'" :class="btnTabClass(jenisLaporan === 'kunci')">
-        <span class="text-lg">🔑</span>
-        <div class="text-left">
-          <h3 class="text-[11px] font-black uppercase tracking-widest">Akses Kunci</h3>
-          <p class="text-[9px] font-bold opacity-60">Masa Operasi</p>
-        </div>
+      <button @click="jenisLaporan = 'kunci'" :class="['flex items-center gap-2 px-4 py-2.5 rounded text-xs font-semibold transition-colors border', jenisLaporan === 'kunci' ? 'bg-[#003479] text-white border-[#003479]' : 'bg-white text-[#5A6672] border-[#DFE3E8] hover:border-[#003479] hover:text-[#003479]']">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+        Pergerakan Kunci
       </button>
-      <button @click="jenisLaporan = 'tng'" :class="btnTabClass(jenisLaporan === 'tng')">
-        <span class="text-lg">🛣️</span>
-        <div class="text-left">
-          <h3 class="text-[11px] font-black uppercase tracking-widest">Kad TnG</h3>
-          <p class="text-[9px] font-bold opacity-60">Tol & Baki</p>
-        </div>
+      <button @click="jenisLaporan = 'tng'" :class="['flex items-center gap-2 px-4 py-2.5 rounded text-xs font-semibold transition-colors border', jenisLaporan === 'tng' ? 'bg-[#003479] text-white border-[#003479]' : 'bg-white text-[#5A6672] border-[#DFE3E8] hover:border-[#003479] hover:text-[#003479]']">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Kad TnG
       </button>
     </div>
 
-    <div class="bg-white border-2 border-slate-800 p-5 shadow-sm no-print rounded-sm">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Filter -->
+    <div class="bg-white border border-[#DFE3E8] rounded shadow-sm p-4 no-print">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Bulan & Tahun Laporan</label>
-          <input v-model="filter.bulanTahun" type="month" class="w-full bg-slate-50 border-2 border-slate-200 focus:border-slate-800 rounded-sm px-4 py-3 text-slate-800 font-bold outline-none text-xs transition-colors" />
+          <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">Bulan & Tahun</label>
+          <input v-model="filter.bulanTahun" type="month" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm text-[#1A2332] outline-none transition-colors" />
         </div>
         <div>
-          <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Identiti Aset</label>
-          <select v-model="filter.kenderaan_id" class="w-full bg-slate-50 border-2 border-slate-200 focus:border-slate-800 rounded-sm px-4 py-3 text-slate-800 font-bold outline-none text-xs cursor-pointer transition-colors">
-            <option value="Semua">-- SEMUA UNIT KENDERAAN --</option>
-            <option v-for="k in senaraiKenderaan" :key="k.id" :value="k.id">{{ k.no_plat }} [{{ k.model.toUpperCase() }}]</option>
+          <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">Unit Kenderaan</label>
+          <select v-model="filter.kenderaan_id" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm text-[#1A2332] outline-none transition-colors bg-white">
+            <option value="Semua">-- Semua Unit --</option>
+            <option v-for="k in senaraiKenderaan" :key="k.id" :value="k.id">{{ k.no_plat }} — {{ k.model }}</option>
           </select>
         </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 no-print">
-      <div class="bg-white border-2 border-slate-200 p-5 shadow-sm rounded-sm">
-        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Jarak Bulanan</p>
-        <p class="text-3xl font-black text-slate-900 tracking-tighter">{{ totalJarak.toFixed(1) }} <span class="text-sm text-slate-500">KM</span></p>
+    <!-- Statistik Ringkas -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 no-print">
+      <div class="bg-white border border-[#DFE3E8] rounded shadow-sm p-4">
+        <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Jarak Bulanan</p>
+        <p class="text-2xl font-bold text-[#1A2332]">{{ totalJarak.toFixed(1) }} <span class="text-sm font-medium text-[#5A6672]">km</span></p>
       </div>
-      <div class="bg-white border-2 border-slate-200 p-5 shadow-sm rounded-sm">
-        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Minyak Digunakan</p>
-        <p class="text-3xl font-black text-slate-900 tracking-tighter">{{ totalLiter.toFixed(2) }} <span class="text-sm text-slate-500">L</span></p>
+      <div class="bg-white border border-[#DFE3E8] rounded shadow-sm p-4">
+        <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Minyak Digunakan</p>
+        <p class="text-2xl font-bold text-[#1A2332]">{{ totalLiter.toFixed(2) }} <span class="text-sm font-medium text-[#5A6672]">L</span></p>
       </div>
-      <div class="bg-white border-2 border-slate-200 p-5 shadow-sm rounded-sm">
-        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Kos Bahan Api</p>
-        <p class="text-3xl font-black text-slate-900 tracking-tighter"><span class="text-sm text-slate-500">RM</span> {{ totalRM.toFixed(2) }}</p>
+      <div class="bg-white border border-[#DFE3E8] rounded shadow-sm p-4">
+        <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Kos Bahan Api</p>
+        <p class="text-2xl font-bold text-[#1A2332]"><span class="text-sm font-medium text-[#5A6672]">RM</span> {{ totalRM.toFixed(2) }}</p>
       </div>
-      <div class="bg-teal-50 border-2 border-teal-600 p-5 shadow-sm rounded-sm relative overflow-hidden">
-        <div class="absolute -right-2 top-1/2 -translate-y-1/2 opacity-10 text-6xl">⛽</div>
-        <p class="text-[9px] font-black text-teal-700 uppercase tracking-widest mb-1 relative z-10">Kadar Penggunaan</p>
-        <p class="text-3xl font-black text-teal-900 tracking-tighter relative z-10">{{ kadarKmPerLiter }} <span class="text-sm text-teal-700">KM/L</span></p>
+      <div class="bg-white border border-l-4 border-[#DFE3E8] border-l-[#003479] rounded shadow-sm p-4">
+        <p class="text-xs font-semibold text-[#003479] uppercase tracking-wide mb-1">Kadar Penggunaan</p>
+        <p class="text-2xl font-bold text-[#003479]">{{ kadarKmPerLiter }} <span class="text-sm font-medium text-[#5A6672]">km/L</span></p>
       </div>
     </div>
 
-    <div class="bg-white border-2 border-slate-800 overflow-hidden shadow-sm rounded-sm print:border-none print:shadow-none print:bg-transparent">
+    <!-- Report Content -->
+    <div class="bg-white border border-[#DFE3E8] rounded shadow-sm overflow-hidden print:border-none print:shadow-none print:bg-transparent">
       <div class="overflow-x-auto custom-scrollbar">
         <ReportBukuLog v-if="jenisLaporan === 'buku_log'" @edit-rekod="bukaModalEdit" :laporanList="rekodList" :filter="filter" :senaraiKenderaan="senaraiKenderaan" :pegawaiKenderaan="pegawai" />
         <ReportMinyak v-else-if="jenisLaporan === 'kad_inden'" @edit-rekod="bukaModalEdit" :laporanList="rekodList" :filter="filter" :senaraiKenderaan="senaraiKenderaan" :pegawaiKenderaan="pegawai" />
-        <ReportKunci v-else-if="jenisLaporan === 'kunci'" :laporanList="rekodList" :pegawaiKenderaan="pegawai" />
+        <ReportKunci v-else-if="jenisLaporan === 'kunci'" :laporanList="rekodList" :filter="filter" :senaraiKenderaan="senaraiKenderaan" :pegawaiKenderaan="pegawai" />
         <ReportTnG v-else-if="jenisLaporan === 'tng'" @edit-rekod="bukaModalEdit" :laporanList="rekodList" :filter="filter" :senaraiKenderaan="senaraiKenderaan" :pegawaiKenderaan="pegawai" />
       </div>
     </div>
 
-    <div v-if="showModalEdit" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 no-print">
-      <div class="bg-white border-2 border-slate-800 p-8 w-full max-w-lg shadow-2xl animate-slide-up rounded-sm max-h-[90vh] overflow-y-auto custom-scrollbar">
-        <h2 class="text-lg font-black uppercase tracking-widest mb-6 text-slate-900">Kemaskini Data Laporan</h2>
+    <!-- Modal: Kemaskini Rekod -->
+    <div v-if="showModalEdit" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 no-print">
+      <div class="bg-white rounded shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto custom-scrollbar">
 
-        <div class="space-y-4">
-          <div class="grid grid-cols-2 gap-4">
+        <div class="px-5 py-4 bg-[#003479] rounded-t">
+          <h3 class="text-sm font-bold text-white">Kemaskini Data Rekod</h3>
+        </div>
+
+        <div class="p-5 space-y-4">
+
+          <!-- Maklumat Perjalanan -->
+          <div class="space-y-3">
+            <p class="text-xs font-bold text-[#003479] uppercase tracking-wide">Maklumat Perjalanan</p>
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Odo Mula</label>
-              <input v-model="editForm.odo_mula" type="number" class="w-full border-2 border-slate-200 focus:border-slate-800 p-3 font-bold text-sm outline-none rounded-sm transition-colors" />
+              <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">Dari (Lokasi Mula)</label>
+              <input v-model="editForm.dari_lokasi" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Cth: Stesen, Kampung, Koordinat GPS..." />
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Odo Akhir</label>
-              <input v-model="editForm.odo_tamat" type="number" class="w-full border-2 border-slate-200 focus:border-slate-800 p-3 font-bold text-sm outline-none rounded-sm transition-colors" />
+              <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">Ke (Destinasi)</label>
+              <input v-model="editForm.destinasi" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Cth: Pejabat, Kawasan Operasi..." />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">Tujuan</label>
+              <input v-model="editForm.tujuan" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Cth: Rondaan, Operasi Tangkap, Mesyuarat..." />
+            </div>
+          </div>
+
+          <div class="border-t border-[#DFE3E8] pt-4">
+            <p class="text-xs font-bold text-[#003479] uppercase tracking-wide mb-3">Kad Rasmi Digunakan</p>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">No. Siri Kad TnG</label>
+                <input v-model="editForm.no_siri_kad_tng" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Kosong jika tiada" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">No. Siri Kad Inden</label>
+                <input v-model="editForm.no_siri_kad_minyak" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Kosong jika tiada" />
+              </div>
+            </div>
+            <p class="text-[11px] text-[#5A6672] mt-1.5">Edit jika kad yang digunakan berbeza dari kad kenderaan asal (kes swap).</p>
+          </div>
+
+          <div class="border-t border-[#DFE3E8] pt-4">
+            <p class="text-xs font-bold text-[#003479] uppercase tracking-wide mb-3">Odometer & Bahan Api</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">Odo Mula</label>
+              <input v-model="editForm.odo_mula" type="number" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">Odo Akhir</label>
+              <input v-model="editForm.odo_tamat" type="number" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" />
             </div>
           </div>
 
           <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Baki TnG (RM)</label>
-            <input v-model="editForm.baki_tng" type="number" step="0.01" class="w-full border-2 border-slate-200 focus:border-slate-800 p-3 font-bold text-sm outline-none rounded-sm transition-colors" placeholder="0.00" />
+            <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">Baki TnG (RM)</label>
+            <input v-model="editForm.baki_tng" type="number" step="0.01" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="0.00" />
           </div>
 
-          <div class="border-t-2 border-slate-100 pt-5 mt-2">
+          <div class="border-t border-[#DFE3E8] pt-4">
             <div class="flex justify-between items-center mb-3">
-              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Resit Minyak</label>
-              <button @click="tambahResitEdit" class="bg-blue-50 text-blue-700 border border-blue-200 text-[9px] font-black px-3 py-1.5 rounded-sm uppercase tracking-wider hover:bg-blue-100 transition-colors">+ Tambah Resit</button>
+              <label class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide">Resit Minyak</label>
+              <button @click="tambahResitEdit" class="text-xs font-semibold text-[#003479] border border-[#003479] hover:bg-[#EEF3FB] px-3 py-1.5 rounded transition-colors">+ Tambah Resit</button>
             </div>
-            <div v-for="(resit, idx) in editForm.senarai_resit" :key="idx" class="relative bg-slate-50 p-4 border border-slate-200 rounded-sm mb-3">
-              <button v-if="editForm.senarai_resit.length > 1" @click="buangResitEdit(idx)" class="absolute -top-2 -right-2 bg-red-100 text-red-600 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-black border border-red-200 hover:bg-red-200 transition-colors">X</button>
-              <input v-model="resit.no_resit" type="text" class="w-full border-2 border-slate-200 p-2 text-xs font-bold mb-2 rounded-sm outline-none focus:border-slate-400" placeholder="No Resit" />
+            <div v-for="(resit, idx) in editForm.senarai_resit" :key="idx" class="relative bg-[#F8FAFC] border border-[#DFE3E8] rounded p-3 mb-3">
+              <button v-if="editForm.senarai_resit.length > 1" @click="buangResitEdit(idx)" class="absolute -top-2 -right-2 bg-[#C0392B] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">×</button>
+              <input v-model="resit.no_resit" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-2 py-2 text-xs outline-none mb-2" placeholder="No. Resit" />
               <div class="grid grid-cols-2 gap-3">
-                <input v-model="resit.liter" type="number" step="0.01" class="w-full border-2 border-slate-200 p-2 text-xs font-bold rounded-sm outline-none focus:border-slate-400" placeholder="Liter" />
-                <input v-model="resit.rm" type="number" step="0.01" class="w-full border-2 border-slate-200 p-2 text-xs font-bold rounded-sm outline-none focus:border-slate-400" placeholder="RM" />
+                <input v-model="resit.liter" type="number" step="0.01" class="border border-[#DFE3E8] focus:border-[#003479] rounded px-2 py-2 text-xs outline-none" placeholder="Liter" />
+                <input v-model="resit.rm" type="number" step="0.01" class="border border-[#DFE3E8] focus:border-[#003479] rounded px-2 py-2 text-xs outline-none" placeholder="RM" />
               </div>
             </div>
           </div>
 
-          <div class="pt-4 flex flex-col gap-2 border-t-2 border-slate-100">
-            <button @click="simpanEdit" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-black py-4 uppercase tracking-widest rounded-sm transition-colors shadow-md">
-              Simpan Perubahan
-            </button>
-            <button @click="showModalEdit = false" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-black py-3 uppercase tracking-widest rounded-sm transition-colors">
-              Batal
-            </button>
+          <div class="flex gap-3 pt-2 border-t border-[#DFE3E8]">
+            <button @click="simpanEdit" class="flex-1 bg-[#003479] hover:bg-[#002560] text-white font-semibold text-sm py-2.5 rounded transition-colors">Simpan Perubahan</button>
+            <button @click="showModalEdit = false" class="flex-1 bg-[#F4F6FA] hover:bg-[#DFE3E8] text-[#5A6672] font-semibold text-sm py-2.5 rounded transition-colors">Batal</button>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -145,7 +176,6 @@ import ReportMinyak from './ReportMinyak.vue'
 import ReportKunci from './ReportKunci.vue'
 import ReportTnG from './ReportTnG.vue'
 
-// Tetapkan Default Bulan Semasa (Format: YYYY-MM)
 const currentMonth = new Date().toISOString().slice(0, 7)
 
 const jenisLaporan = ref('buku_log')
@@ -153,40 +183,28 @@ const rekodList = ref([])
 const senaraiKenderaan = ref([])
 const pegawai = ref('PENTADBIR SISTEM')
 
-const filter = ref({ 
-  bulanTahun: currentMonth, 
-  kenderaan_id: 'Semua' 
+const filter = ref({
+  bulanTahun: currentMonth,
+  kenderaan_id: 'Semua'
 })
 
-// Pengiraan Statistik di Frontend (Atas Jadual)
 const totalJarak = computed(() => rekodList.value.reduce((sum, r) => sum + (parseFloat(r.jumlah_jarak) || 0), 0))
 const totalLiter = computed(() => rekodList.value.reduce((sum, r) => sum + (parseFloat(r.jumlah_liter_minyak) || 0), 0))
 const totalRM = computed(() => rekodList.value.reduce((sum, r) => sum + (parseFloat(r.jumlah_rm_minyak) || 0), 0))
 const kadarKmPerLiter = computed(() => totalLiter.value > 0 ? (totalJarak.value / totalLiter.value).toFixed(2) : '0.00')
 
-// State Modal Edit
 const showModalEdit = ref(false)
-const editForm = ref({
-  id: null, odo_mula: '', odo_tamat: '', baki_tng: '', senarai_resit: []
-})
-
-const btnTabClass = (isActive) => {
-  const base = "flex items-center gap-3 p-4 border-2 transition-all rounded-sm"
-  return isActive 
-    ? `${base} bg-slate-800 text-white border-slate-800 shadow-md`
-    : `${base} bg-white text-slate-600 border-slate-200 hover:border-slate-400`
-}
+const editForm = ref({ id: null, dari_lokasi: '', destinasi: '', tujuan: '', odo_mula: '', odo_tamat: '', baki_tng: '', no_siri_kad_tng: '', no_siri_kad_minyak: '', senarai_resit: [] })
 
 const fetchSemuaData = async () => {
   try {
     let tarikh_mula = '';
     let tarikh_tamat = '';
-    
-    // Tukar input "YYYY-MM" kepada tarikh penuh untuk Backend
+
     if (filter.value.bulanTahun) {
       const [year, month] = filter.value.bulanTahun.split('-');
       tarikh_mula = `${year}-${month}-01`;
-      tarikh_tamat = new Date(year, month, 0).toISOString().split('T')[0]; // Hari terakhir bulan
+      tarikh_tamat = new Date(year, month, 0).toISOString().split('T')[0];
     }
 
     const resReq = await api.get('/admin/laporan', {
@@ -198,7 +216,7 @@ const fetchSemuaData = async () => {
     })
     rekodList.value = resReq.data.data || []
     pegawai.value = resReq.data.pegawai_kenderaan || 'PENTADBIR SISTEM'
-    
+
     const resKen = await api.get('/kenderaan/senarai')
     senaraiKenderaan.value = resKen.data.data || []
   } catch (error) {
@@ -213,6 +231,11 @@ const cetakLaporan = () => window.print()
 
 const bukaModalEdit = (rekod) => {
   editForm.value.id = rekod.id
+  editForm.value.dari_lokasi = rekod.dari_lokasi || ''
+  editForm.value.destinasi = rekod.destinasi || ''
+  editForm.value.tujuan = rekod.tujuan || ''
+  editForm.value.no_siri_kad_tng = rekod.no_siri_kad_tng || ''
+  editForm.value.no_siri_kad_minyak = rekod.no_siri_kad_minyak || ''
   editForm.value.odo_mula = rekod.odo_mula
   editForm.value.odo_tamat = rekod.odo_tamat
   editForm.value.baki_tng = rekod.baki_tng
@@ -244,11 +267,14 @@ onMounted(() => fetchSemuaData())
 <style scoped>
 @keyframes slide-up { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 .animate-slide-up { animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
 @media print {
   .no-print { display: none !important; }
-  .space-y-6 { margin: 0 !important; }
+  .space-y-5 { margin: 0 !important; }
   @page { size: A4 landscape; margin: 0mm; }
 }
+
 .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #DFE3E8; border-radius: 4px; }
 </style>
