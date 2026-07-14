@@ -5,6 +5,7 @@ import Dashboard from '../views/Dashboard.vue'
 import Booking from '../views/Booking.vue'
 import History from '../views/History.vue'
 import AdminPanel from '../views/AdminPanel.vue';
+import QuickAccess from '../views/QuickAccess.vue';
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -14,6 +15,7 @@ const routes = [
   { path: '/booking', name: 'Booking', component: Booking },
   { path: '/sejarah', name: 'History', component: History },
   { path: '/admin', name: 'AdminPanel', component: AdminPanel },
+  { path: '/quick/:token', name: 'QuickAccess', component: QuickAccess },
 ]
 
 const router = createRouter({

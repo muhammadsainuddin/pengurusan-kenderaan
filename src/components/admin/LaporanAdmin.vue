@@ -76,7 +76,7 @@
         <ReportBukuLog v-if="jenisLaporan === 'buku_log'" @edit-rekod="bukaModalEdit" :laporanList="rekodList" :filter="filter" :senaraiKenderaan="senaraiKenderaan" :pegawaiKenderaan="pegawai" />
         <ReportMinyak v-else-if="jenisLaporan === 'kad_inden'" @edit-rekod="bukaModalEdit" :laporanList="rekodList" :filter="filter" :senaraiKenderaan="senaraiKenderaan" :pegawaiKenderaan="pegawai" />
         <ReportKunci v-else-if="jenisLaporan === 'kunci'" :laporanList="rekodList" :filter="filter" :senaraiKenderaan="senaraiKenderaan" :pegawaiKenderaan="pegawai" />
-        <ReportTnG v-else-if="jenisLaporan === 'tng'" @edit-rekod="bukaModalEdit" :laporanList="rekodList" :filter="filter" :senaraiKenderaan="senaraiKenderaan" :pegawaiKenderaan="pegawai" />
+        <ReportTnG v-else-if="jenisLaporan === 'tng'" @edit-rekod="bukaModalEdit" @refresh-data="fetchSemuaData" :laporanList="rekodList" :filter="filter" :senaraiKenderaan="senaraiKenderaan" :pegawaiKenderaan="pegawai" :bakiPembukaBulan="bakiPembukaBulan" />
       </div>
     </div>
 
@@ -182,6 +182,7 @@ const jenisLaporan = ref('buku_log')
 const rekodList = ref([])
 const senaraiKenderaan = ref([])
 const pegawai = ref('PENTADBIR SISTEM')
+const bakiPembukaBulan = ref({})
 
 const filter = ref({
   bulanTahun: currentMonth,
@@ -216,6 +217,7 @@ const fetchSemuaData = async () => {
     })
     rekodList.value = resReq.data.data || []
     pegawai.value = resReq.data.pegawai_kenderaan || 'PENTADBIR SISTEM'
+    bakiPembukaBulan.value = resReq.data.bakiPembukaBulan || {}
 
     const resKen = await api.get('/kenderaan/senarai')
     senaraiKenderaan.value = resKen.data.data || []

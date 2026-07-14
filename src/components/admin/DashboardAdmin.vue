@@ -64,6 +64,9 @@
             <p class="status-info-label status-info-label--guna">Pemandu Semasa</p>
             <p class="status-info-name">{{ aset.pemandu_semasa || '—' }}</p>
             <p class="status-info-dest">→ {{ aset.destinasi_semasa || '—' }}</p>
+            <button @click="bukaModalPemulangan(aset)" class="rekod-pemulangan-btn">
+              Sudah Dipulangkan? Rekod Sekarang
+            </button>
           </template>
           <template v-else-if="aset.status === 'Ditempah'">
             <p class="status-info-label status-info-label--tempah">Tempahan Aktif</p>
@@ -137,15 +140,25 @@
       <p class="empty-sub">Tiada rekod untuk kategori "{{ kategoriAktif }}".</p>
     </div>
 
+    <ModalRekodPemulangan v-if="asetDipilihPemulangan" :aset="asetDipilihPemulangan" @close="asetDipilihPemulangan = null" @success="onPemulanganSuccess" />
+
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import api from '../../api/axios'
+import ModalRekodPemulangan from './ModalRekodPemulangan.vue'
 
 const ringkasanList = ref([])
 const kategoriAktif = ref('Semua')
+const asetDipilihPemulangan = ref(null)
+
+const bukaModalPemulangan = (aset) => { asetDipilihPemulangan.value = aset }
+const onPemulanganSuccess = () => {
+  asetDipilihPemulangan.value = null
+  fetchDashboard()
+}
 
 const fetchDashboard = async () => {
   try {
@@ -293,6 +306,14 @@ onMounted(() => {
 .status-info-label--tempah   { color: #1E40AF; }
 .status-info-name { font-size: 14px; font-weight: 700; color: #1A2332; }
 .status-info-dest { font-size: 12px; color: #5A6672; margin-top: 2px; }
+
+.rekod-pemulangan-btn {
+  margin-top: 10px; width: 100%;
+  background: white; border: 1px solid #F59E0B; color: #92400E;
+  font-size: 11px; font-weight: 700; padding: 7px 10px; border-radius: 6px;
+  cursor: pointer; transition: background 0.15s;
+}
+.rekod-pemulangan-btn:hover { background: #FFFBEB; }
 
 /* Bookings */
 .bookings-section { }
