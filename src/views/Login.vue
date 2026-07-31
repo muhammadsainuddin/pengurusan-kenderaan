@@ -7,9 +7,7 @@
           <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
         </svg>
       </div>
-      <p class="brand-org">Jabatan Perhilitan Malaysia</p>
       <h1 class="brand-title">Pengurusan Kenderaan</h1>
-      <p class="brand-sub">Taman Negara Pulau Pinang</p>
     </div>
 
     <div class="flex-1 px-6 pb-8">
@@ -21,18 +19,21 @@
           <span>{{ errorMsg }}</span>
         </div>
 
-        <form @submit.prevent="handleLogin" class="space-y-5">
+        <form @submit.prevent="handleLogin" autocomplete="on" class="space-y-5">
           <div class="md3-field">
             <label class="md3-field-label">E-mel Rasmi</label>
-            <input v-model="form.email" type="email" required class="md3-input" placeholder="nama@wildlife.gov.my" />
+            <input v-model="form.email" type="email" name="username" autocomplete="username" required class="md3-input" placeholder="nama@email.com" />
           </div>
 
           <div class="md3-field">
             <label class="md3-field-label">Kata Laluan</label>
-            <input v-model="form.password" type="password" required class="md3-input" placeholder="••••••••" />
+            <input v-model="form.password" type="password" name="password" autocomplete="current-password" required class="md3-input" placeholder="••••••••" />
           </div>
 
-
+          <label class="md3-remember">
+            <input type="checkbox" v-model="rememberMe" />
+            <span>Ingat saya</span>
+          </label>
 
           <button type="submit" :disabled="isLoading" class="md3-btn-filled w-full mt-2">
             <span v-if="isLoading" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -48,7 +49,7 @@
     </div>
 
     <div class="pb-8 text-center">
-      <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.15em;color:#BFC9BD">© Jabatan Perhilitan Malaysia</p>
+      <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.15em;color:#BFC9BD">© Pengurusan Kenderaan</p>
     </div>
   </div>
 </template>
@@ -62,8 +63,9 @@ const router = useRouter()
 const form = reactive({ email: '', password: '' })
 const errorMsg = ref('')
 const isLoading = ref(false)
+const rememberMe = ref(true)
 
-onMounted(() => {
+onMounted(async () => {
   const token = localStorage.getItem('token')
   const userStr = localStorage.getItem('user')
 
@@ -78,6 +80,26 @@ onMounted(() => {
     } catch (error) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+    }
+    return
+  }
+
+  // Prefill emel yang diingati (fallback untuk pelayar tanpa Credential Management API)
+  const rememberedEmail = localStorage.getItem('rememberedEmail')
+  if (rememberedEmail) {
+    form.email = rememberedEmail
+  }
+
+  // Cuba auto-isi menggunakan kata laluan tersimpan pelayar (Chrome/Edge)
+  if (window.PasswordCredential && navigator.credentials) {
+    try {
+      const cred = await navigator.credentials.get({ password: true, mediation: 'optional' })
+      if (cred && cred.type === 'password') {
+        form.email = cred.id
+        form.password = cred.password
+      }
+    } catch (error) {
+      // Diam sahaja jika pelayar tidak menyokong atau pengguna membatalkan
     }
   }
 })
@@ -95,6 +117,28 @@ const handleLogin = async () => {
     const response = await api.post('/auth/login', form)
     localStorage.setItem('token', response.data.token)
     localStorage.setItem('user', JSON.stringify(response.data.user))
+
+    if (rememberMe.value) {
+      localStorage.setItem('rememberedEmail', form.email)
+
+      if (window.PasswordCredential && navigator.credentials) {
+        try {
+          const cred = new window.PasswordCredential({
+            id: form.email,
+            password: form.password,
+            name: form.email
+          })
+          await navigator.credentials.store(cred)
+        } catch (error) {
+          // Diam sahaja jika pelayar tidak menyokong Credential Management API
+        }
+      }
+    } else {
+      localStorage.removeItem('rememberedEmail')
+      if (navigator.credentials?.preventSilentAccess) {
+        navigator.credentials.preventSilentAccess()
+      }
+    }
 
     if (response.data.user.role === 'Admin') {
       router.push('/admin')
@@ -120,9 +164,7 @@ const handleLogin = async () => {
   box-shadow: 0 4px 14px rgba(46,125,79,0.40);
 }
 
-.brand-org  { font-size: 11px; font-weight: 600; color: #2E7D4F; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 4px; }
 .brand-title{ font-size: 22px; font-weight: 700; color: #191C18; }
-.brand-sub  { font-size: 13px; color: #71796E; margin-top: 2px; }
 
 .page-heading { font-size: 28px; font-weight: 400; color: #191C18; letter-spacing: -0.3px; }
 
@@ -149,6 +191,17 @@ const handleLogin = async () => {
 }
 .md3-input:focus { border-bottom: 2.5px solid #2E7D4F; }
 .md3-input::placeholder { color: #A0ABA0; font-weight: 400; font-size: 14px; }
+
+.md3-remember {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500; color: #191C18;
+  cursor: pointer; user-select: none;
+}
+.md3-remember input[type="checkbox"] {
+  width: 18px; height: 18px;
+  accent-color: #2E7D4F;
+  cursor: pointer;
+}
 
 .md3-text-link { color: #2E7D4F; font-weight: 600; }
 .md3-text-link:hover { text-decoration: underline; }

@@ -89,20 +89,7 @@
             </select>
           </div>
 
-          <div class="border-t border-[#DFE3E8] pt-4">
-            <p class="text-xs font-bold text-[#003479] uppercase tracking-wide mb-3">Kad Rasmi Kenderaan</p>
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">No. Siri Kad TnG</label>
-                <input v-model="form.no_siri_kad_tng" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Cth: TNG-XXXX-XXXX" />
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1.5">No. Siri Kad Inden</label>
-                <input v-model="form.no_siri_kad_minyak" type="text" class="w-full border border-[#DFE3E8] focus:border-[#003479] rounded px-3 py-2.5 text-sm outline-none transition-colors" placeholder="Cth: KAD-XXXX-XXXX" />
-              </div>
-            </div>
-            <p class="text-[11px] text-[#5A6672] mt-2">Kosongkan jika kenderaan ini tiada kad rasmi. Nombor ini akan direkod secara automatik setiap kali staf mengambil kad.</p>
-          </div>
+          <p class="text-[11px] text-[#5A6672] bg-[#F8FAFC] border border-[#DFE3E8] rounded px-3 py-2">Kad TnG &amp; Kad Minyak kini diuruskan di tab <span class="font-semibold text-[#003479]">Urus Kad</span>.</p>
 
           <div class="flex gap-3 pt-2 border-t border-[#DFE3E8]">
             <button @click="simpanAset" class="flex-1 bg-[#003479] hover:bg-[#002560] text-white font-semibold text-sm py-2.5 rounded transition-colors">
@@ -187,7 +174,7 @@ const senaraiKenderaan = ref([])
 const showModal = ref(false)
 const isEdit = ref(false)
 const currentId = ref(null)
-const form = ref({ no_plat: '', model: '', kategori: 'Kereta', no_siri_kad_tng: '', no_siri_kad_minyak: '' })
+const form = ref({ no_plat: '', model: '', kategori: 'Kereta' })
 
 const showModalQR = ref(false)
 const kenderaanQR = ref(null)
@@ -214,14 +201,14 @@ const fetchAset = async () => {
 
 const bukaModalTambah = () => {
   isEdit.value = false;
-  form.value = { no_plat: '', model: '', kategori: 'Kereta', no_siri_kad_tng: '', no_siri_kad_minyak: '' };
+  form.value = { no_plat: '', model: '', kategori: 'Kereta' };
   showModal.value = true;
 }
 
 const bukaModalEdit = (k) => {
   isEdit.value = true;
   currentId.value = k.id;
-  form.value = { no_plat: k.no_plat, model: k.model, kategori: k.kategori, no_siri_kad_tng: k.no_siri_kad_tng || '', no_siri_kad_minyak: k.no_siri_kad_minyak || '' };
+  form.value = { no_plat: k.no_plat, model: k.model, kategori: k.kategori };
   showModal.value = true;
 }
 

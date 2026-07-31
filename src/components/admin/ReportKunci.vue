@@ -91,7 +91,6 @@
         <div class="text-center mb-4">
           <p class="text-[9px] font-bold text-right mb-3">Pekeliling Perbendaharaan Malaysia WP 4.1</p>
           <p class="text-[16px] font-bold uppercase tracking-wider">DAFTAR PERGERAKAN KUNCI KENDERAAN</p>
-          <p class="text-[10px] mt-1">Jabatan Perhilitan Malaysia</p>
         </div>
 
         <!-- Maklumat Kenderaan & Bulan -->

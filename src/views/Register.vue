@@ -23,7 +23,7 @@
 
           <div class="md3-field">
             <label class="md3-field-label">E-mel Rasmi</label>
-            <input v-model="form.email" type="email" class="md3-input" placeholder="nama@wildlife.gov.my" />
+            <input v-model="form.email" type="email" class="md3-input" placeholder="nama@email.com" />
           </div>
 
           <div class="md3-field">

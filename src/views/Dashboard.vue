@@ -5,7 +5,6 @@
     <header class="top-bar">
       <div class="max-w-md mx-auto flex justify-between items-center px-4 h-full">
         <div>
-          <p class="top-bar-org">Jabatan Perhilitan</p>
           <h1 class="top-bar-title">Pengurusan Kenderaan</h1>
         </div>
         <button @click="activeTab = 'profil'" class="avatar-btn">
@@ -299,7 +298,6 @@ onMounted(() => {
   position: sticky; top: 0; z-index: 40;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
-.top-bar-org   { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.12em; }
 .top-bar-title { font-size: 20px; font-weight: 700; color: white; letter-spacing: -0.3px; line-height: 1.2; }
 
 .avatar-btn {

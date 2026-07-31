@@ -13,7 +13,6 @@
             </svg>
           </div>
           <div>
-            <p class="gov-org">Jabatan Perhilitan Malaysia</p>
             <h1 class="gov-system-name">Sistem Pengurusan Kenderaan</h1>
           </div>
         </div>
@@ -39,48 +38,56 @@
       </div>
     </header>
 
-    <!-- Navigation Tabs -->
-    <nav class="gov-nav print:hidden">
-      <div class="gov-nav-inner">
-        <button @click="activeTab = 'dashboard'" :class="['gov-tab', activeTab === 'dashboard' ? 'gov-tab--active' : '']">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-          Ringkasan
-        </button>
+    <div class="admin-body">
+      <!-- Sidebar Navigation -->
+      <aside class="gov-sidebar print:hidden">
+        <nav class="gov-sidebar-nav">
+          <button @click="activeTab = 'dashboard'" :class="['gov-tab', activeTab === 'dashboard' ? 'gov-tab--active' : '']">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            <span>Ringkasan</span>
+          </button>
 
-        <button @click="activeTab = 'pergerakan'" :class="['gov-tab', activeTab === 'pergerakan' ? 'gov-tab--active' : '']">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-          Log Pergerakan
-        </button>
+          <button @click="activeTab = 'pergerakan'" :class="['gov-tab', activeTab === 'pergerakan' ? 'gov-tab--active' : '']">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            <span>Log Pergerakan</span>
+          </button>
 
-        <div class="gov-nav-divider"></div>
+          <div class="gov-nav-divider"></div>
 
-        <button @click="activeTab = 'kenderaan'" :class="['gov-tab', activeTab === 'kenderaan' ? 'gov-tab--active' : '']">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-          Urus Aset
-        </button>
+          <button @click="activeTab = 'kenderaan'" :class="['gov-tab', activeTab === 'kenderaan' ? 'gov-tab--active' : '']">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            <span>Urus Aset</span>
+          </button>
 
-        <button @click="activeTab = 'pengguna'" :class="['gov-tab', activeTab === 'pengguna' ? 'gov-tab--active' : '']">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-          Urus Staf
-        </button>
+          <button @click="activeTab = 'kad'" :class="['gov-tab', activeTab === 'kad' ? 'gov-tab--active' : '']">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m3 0h4M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+            <span>Urus Kad</span>
+          </button>
 
-        <div class="gov-nav-divider"></div>
+          <button @click="activeTab = 'pengguna'" :class="['gov-tab', activeTab === 'pengguna' ? 'gov-tab--active' : '']">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <span>Urus Staf</span>
+          </button>
 
-        <button @click="activeTab = 'laporan'" :class="['gov-tab', activeTab === 'laporan' ? 'gov-tab--active' : '']">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          Laporan
-        </button>
-      </div>
-    </nav>
+          <div class="gov-nav-divider"></div>
 
-    <!-- Content -->
-    <main class="gov-content">
-      <DashboardAdmin v-if="activeTab === 'dashboard'" />
-      <PergerakanAdmin v-if="activeTab === 'pergerakan'" />
-      <LaporanAdmin v-if="activeTab === 'laporan'" />
-      <KenderaanAdmin v-if="activeTab === 'kenderaan'" />
-      <UsersAdmin v-if="activeTab === 'pengguna'" />
-    </main>
+          <button @click="activeTab = 'laporan'" :class="['gov-tab', activeTab === 'laporan' ? 'gov-tab--active' : '']">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span>Laporan</span>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Content -->
+      <main class="gov-content">
+        <DashboardAdmin v-if="activeTab === 'dashboard'" />
+        <PergerakanAdmin v-if="activeTab === 'pergerakan'" />
+        <LaporanAdmin v-if="activeTab === 'laporan'" />
+        <KenderaanAdmin v-if="activeTab === 'kenderaan'" />
+        <KadAdmin v-if="activeTab === 'kad'" />
+        <UsersAdmin v-if="activeTab === 'pengguna'" />
+      </main>
+    </div>
 
   </div>
 </template>
@@ -93,6 +100,7 @@ import DashboardAdmin from '../components/admin/DashboardAdmin.vue'
 import PergerakanAdmin from '../components/admin/PergerakanAdmin.vue'
 import LaporanAdmin from '../components/admin/LaporanAdmin.vue'
 import KenderaanAdmin from '../components/admin/KenderaanAdmin.vue'
+import KadAdmin from '../components/admin/KadAdmin.vue'
 import UsersAdmin from '../components/admin/UsersAdmin.vue'
 
 const router = useRouter()
@@ -123,7 +131,7 @@ const handleLogout = () => {
   position: sticky; top: 0; z-index: 50;
 }
 .gov-header-inner {
-  max-width: 1400px; margin: 0 auto;
+  width: 100%;
   padding: 12px 24px;
   display: flex; justify-content: space-between; align-items: center;
 }
@@ -137,7 +145,6 @@ const handleLogout = () => {
   flex-shrink: 0;
 }
 
-.gov-org         { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.15em; }
 .gov-system-name { font-size: 17px; font-weight: 700; color: white; letter-spacing: -0.2px; margin-top: 1px; }
 
 .gov-user-name { font-size: 13px; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -168,49 +175,72 @@ const handleLogout = () => {
 }
 .gov-btn-logout:hover { background: rgba(192,57,43,0.55); color: white; }
 
-/* ── Navigation Bar ── */
-.gov-nav {
-  background: white;
-  border-bottom: 1px solid #DFE3E8;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  position: sticky; top: 68px; z-index: 40;
-  overflow-x: auto;
+/* ── Body Layout ── */
+.admin-body {
+  display: flex;
+  align-items: flex-start;
 }
-.gov-nav-inner {
-  max-width: 1400px; margin: 0 auto;
-  padding: 0 24px;
-  display: flex; align-items: stretch; gap: 0;
-  min-width: max-content;
+
+/* ── Sidebar Navigation ── */
+.gov-sidebar {
+  width: 240px; flex-shrink: 0;
+  background: white;
+  border-right: 1px solid #DFE3E8;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.04);
+  position: sticky; top: 68px;
+  height: calc(100vh - 68px);
+  overflow-y: auto;
+}
+.gov-sidebar-nav {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 16px 12px;
 }
 
 .gov-tab {
-  display: flex; align-items: center; gap: 7px;
-  padding: 12px 18px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px;
   font-size: 13px; font-weight: 600; color: #5A6672;
-  background: none; border: none; border-bottom: 3px solid transparent;
-  cursor: pointer; transition: color 0.15s, border-color 0.15s;
+  background: none; border: none; border-radius: 8px;
+  cursor: pointer; transition: color 0.15s, background 0.15s;
   white-space: nowrap; letter-spacing: 0.01em;
+  text-align: left; width: 100%;
 }
 .gov-tab:hover { color: #003479; background: #F4F6FA; }
 .gov-tab--active {
   color: #003479;
-  border-bottom-color: #003479;
   background: #EEF3FB;
 }
 
 .gov-nav-divider {
-  width: 1px; background: #DFE3E8;
-  margin: 8px 4px;
+  height: 1px; background: #DFE3E8;
+  margin: 8px 6px;
 }
 
 /* ── Content Area ── */
 .gov-content {
-  max-width: 1400px; margin: 0 auto;
+  flex: 1;
+  min-width: 0;
   padding: 24px;
 }
 
-/* Scrollbar for nav */
-.gov-nav::-webkit-scrollbar { height: 3px; }
-.gov-nav::-webkit-scrollbar-track { background: transparent; }
-.gov-nav::-webkit-scrollbar-thumb { background: #DFE3E8; border-radius: 0; }
+/* Scrollbar for sidebar */
+.gov-sidebar::-webkit-scrollbar { width: 4px; }
+.gov-sidebar::-webkit-scrollbar-track { background: transparent; }
+.gov-sidebar::-webkit-scrollbar-thumb { background: #DFE3E8; border-radius: 4px; }
+
+/* ── Small screens: sidebar collapses to a horizontal scrollable bar ── */
+@media (max-width: 768px) {
+  .admin-body { flex-direction: column; }
+  .gov-sidebar {
+    width: 100%; height: auto;
+    position: sticky; top: 68px;
+    border-right: none; border-bottom: 1px solid #DFE3E8;
+    overflow-x: auto; overflow-y: hidden;
+  }
+  .gov-sidebar-nav {
+    flex-direction: row;
+    padding: 8px 12px;
+  }
+  .gov-nav-divider { width: 1px; height: auto; margin: 4px 4px; }
+}
 </style>
