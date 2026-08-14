@@ -42,7 +42,7 @@
               </td>
               <td class="px-4 py-3 text-sm text-[#1A2332] font-medium">{{ e.no_siri_kad || '—' }}</td>
               <td class="px-4 py-3 font-bold text-[#003479] text-sm">{{ e.no_plat }}</td>
-              <td class="px-4 py-3 font-semibold text-[#1A2332] text-sm">{{ e.nama_staf }}</td>
+              <td class="px-4 py-3 font-semibold text-[#1A2332] text-sm capitalize">{{ e.nama_staf }}</td>
               <td class="px-4 py-3 text-sm text-[#5A6672]">{{ e.no_resit || '—' }}</td>
               <td class="px-4 py-3 text-sm font-semibold text-[#1A2332] text-center">{{ e.liter ? `${e.liter} L` : '—' }}</td>
               <td class="px-4 py-3 text-sm font-semibold text-[#003479] text-center">{{ e.rm ? `RM ${parseFloat(e.rm).toFixed(2)}` : '—' }}</td>

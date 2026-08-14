@@ -42,7 +42,7 @@
                 </div>
                 <div v-else class="mt-2 text-xs text-[#F59E0B] font-medium">Belum kembali</div>
               </td>
-              <td class="px-4 py-3 font-semibold text-[#1A2332] text-sm align-top">{{ row.nama_staf }}</td>
+              <td class="px-4 py-3 font-semibold text-[#1A2332] text-sm align-top capitalize">{{ row.nama_staf }}</td>
               <td class="px-4 py-3 align-top">
                 <div class="text-sm font-semibold text-[#1A2332]">{{ row.dari_lokasi || 'TNPP' }} → {{ row.destinasi }}</div>
                 <div v-for="h in row.senarai_harian" :key="h.id" class="ml-3 mt-1 pl-2 border-l-2 border-[#DBEAFE] text-xs text-[#5A6672]">

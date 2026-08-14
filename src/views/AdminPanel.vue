@@ -20,7 +20,7 @@
         <!-- User Block -->
         <div class="flex items-center gap-3">
           <div class="hidden md:block text-right">
-            <p class="gov-user-name">{{ currentUser?.name || 'Pentadbir' }}</p>
+            <p class="gov-user-name capitalize">{{ currentUser?.name || 'Pentadbir' }}</p>
             <p class="gov-user-role">{{ currentUser?.negeri || 'Stesen' }}</p>
           </div>
           <div class="gov-user-badge">

@@ -39,7 +39,7 @@
               <td class="px-4 py-3 text-sm font-medium text-[#1A2332]">{{ formatTarikh(e.tarikh) }}</td>
               <td class="px-4 py-3 text-sm text-[#1A2332] font-medium">{{ e.no_siri_kad || '—' }}</td>
               <td class="px-4 py-3">
-                <p class="font-semibold text-[#1A2332] text-sm">{{ e.nama_staf }}</p>
+                <p class="font-semibold text-[#1A2332] text-sm capitalize">{{ e.nama_staf }}</p>
                 <p class="text-xs text-[#003479] font-bold mt-0.5">{{ e.no_plat }}</p>
               </td>
               <td class="px-4 py-3 text-sm text-[#1A2332]">

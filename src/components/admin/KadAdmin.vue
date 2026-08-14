@@ -80,6 +80,7 @@
               </td>
               <td class="px-4 py-3">
                 <div class="flex justify-center gap-2">
+                  <button @click="bukaButiranKad(kad)" title="Lihat Perbelanjaan" class="text-xs font-semibold text-[#065F46] border border-[#10B981] hover:bg-[#ECFDF5] px-3 py-1.5 rounded transition-colors">Lihat Perbelanjaan</button>
                   <button @click="bukaModalEdit(kad)" class="text-xs font-semibold text-[#003479] border border-[#003479] hover:bg-[#EEF3FB] px-3 py-1.5 rounded transition-colors">Edit</button>
                   <button @click="padamKad(kad.id)" class="bg-white border border-[#DFE3E8] hover:border-[#C0392B] hover:bg-red-50 text-[#C0392B] px-2.5 py-1.5 rounded transition-colors">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -169,15 +170,19 @@
       </div>
     </div>
 
+    <ButiranKad v-if="kadDipilih" :kad="kadDipilih" @close="kadDipilih = null" />
+
   </div>
 </template>
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import api from '../../api/axios'
+import ButiranKad from './ButiranKad.vue'
 
 const senaraiKad = ref([])
 const senaraiKereta = ref([])
+const kadDipilih = ref(null)
 
 const showModal = ref(false)
 const isEdit = ref(false)
@@ -239,6 +244,8 @@ const bukaModalTambah = () => {
   form.value = { jenis: 'TnG', no_siri: '', kenderaan_id: null, status: 'Aktif', catatan: '' }
   showModal.value = true
 }
+
+const bukaButiranKad = (kad) => { kadDipilih.value = kad }
 
 const bukaModalEdit = (kad) => {
   isEdit.value = true

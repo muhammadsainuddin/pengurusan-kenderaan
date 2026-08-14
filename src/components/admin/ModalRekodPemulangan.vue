@@ -10,7 +10,7 @@
       <div class="p-5 space-y-4">
         <div class="bg-[#F8FAFC] border border-[#DFE3E8] rounded p-3">
           <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Kenderaan / Pemandu</p>
-          <p class="text-sm font-bold text-[#1A2332]">{{ aset?.no_plat }} — {{ aset?.pemandu_semasa || '—' }}</p>
+          <p class="text-sm font-bold text-[#1A2332]">{{ aset?.no_plat }} — <span class="capitalize">{{ aset?.pemandu_semasa || '—' }}</span></p>
           <p class="text-xs text-[#5A6672] mt-0.5">→ {{ aset?.destinasi_semasa || '—' }}</p>
         </div>
 

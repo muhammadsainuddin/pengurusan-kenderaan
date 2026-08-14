@@ -32,7 +32,7 @@
             </tr>
             <tr v-for="user in senaraiPengguna" :key="user.id" class="hover:bg-[#F8FAFC] transition-colors">
               <td class="px-4 py-3">
-                <p class="font-semibold text-[#1A2332]">{{ user.name }}</p>
+                <p class="font-semibold text-[#1A2332] capitalize">{{ user.name }}</p>
               </td>
               <td class="px-4 py-3 text-[#5A6672] text-sm">{{ user.email }}</td>
               <td class="px-4 py-3">

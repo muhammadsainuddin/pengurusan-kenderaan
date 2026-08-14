@@ -60,17 +60,18 @@
               <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wide">Destinasi</th>
               <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wide">Odometer</th>
               <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wide">Jarak</th>
+              <th class="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wide">Minyak / TnG</th>
               <th class="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wide">Status</th>
               <th class="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wide">Tindakan</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-[#F0F2F5]">
             <tr v-if="paginatedList.length === 0">
-              <td colspan="7" class="px-4 py-12 text-center text-[#5A6672] text-xs">Tiada rekod dijumpai.</td>
+              <td colspan="8" class="px-4 py-12 text-center text-[#5A6672] text-xs">Tiada rekod dijumpai.</td>
             </tr>
             <tr v-for="rekod in paginatedList" :key="rekod.id" class="hover:bg-[#F8FAFC] transition-colors">
               <td class="px-4 py-3">
-                <p class="font-semibold text-[#1A2332] text-sm">{{ rekod.nama_staf }}</p>
+                <p class="font-semibold text-[#1A2332] text-sm capitalize">{{ rekod.nama_staf }}</p>
                 <p class="text-xs text-[#5A6672] mt-0.5">{{ formatTarikhPendek(rekod.masa_keluar) }}</p>
               </td>
               <td class="px-4 py-3">
@@ -87,12 +88,18 @@
                 <span v-if="rekod.odo_tamat">{{ (rekod.odo_tamat - rekod.odo_mula).toFixed(1) }} km</span>
                 <span v-else class="text-[#DFE3E8]">—</span>
               </td>
+              <td class="px-4 py-3 text-center whitespace-nowrap">
+                <span v-if="adaIsiMinyak(rekod)" title="Ada isi minyak" class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-[#FEF3C7] text-[#92400E] mr-1">⛽ Minyak</span>
+                <span v-if="adaGunaTng(rekod)" title="Guna Kad TnG" class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-[#EDE9FE] text-[#5B21B6]">🛣️ TnG</span>
+                <span v-if="!adaIsiMinyak(rekod) && !adaGunaTng(rekod)" class="text-xs text-[#DFE3E8]">—</span>
+              </td>
               <td class="px-4 py-3 text-center">
                 <span :class="['text-xs font-medium px-2.5 py-1 rounded-full', rekod.status_trip === 'Selesai' ? 'bg-[#F3F4F6] text-[#374151]' : 'bg-[#FEF3C7] text-[#92400E]']">
                   {{ rekod.status_trip }}
                 </span>
               </td>
               <td class="px-4 py-3 text-center whitespace-nowrap">
+                <button @click="bukaModalLihat(rekod)" class="text-xs font-semibold text-[#065F46] border border-[#10B981] hover:bg-[#ECFDF5] px-2.5 py-1.5 rounded transition-colors mr-1.5">Lihat</button>
                 <button @click="bukaModalEdit(rekod)" class="text-xs font-semibold text-[#003479] border border-[#003479] hover:bg-[#EEF3FB] px-2.5 py-1.5 rounded transition-colors mr-1.5">Edit</button>
                 <button @click="padamRekod(rekod)" class="text-xs font-semibold text-[#C0392B] border border-[#C0392B] hover:bg-[#FDEDEC] px-2.5 py-1.5 rounded transition-colors">Padam</button>
               </td>
@@ -225,7 +232,7 @@
 
         <div class="px-6 py-4 bg-[#003479] rounded-t">
           <h3 class="text-sm font-bold text-white">Kemaskini Rekod</h3>
-          <p class="text-xs text-white/70 mt-0.5">{{ editForm.no_plat }} — {{ editForm.nama_staf }}</p>
+          <p class="text-xs text-white/70 mt-0.5">{{ editForm.no_plat }} — <span class="capitalize">{{ editForm.nama_staf }}</span></p>
         </div>
 
         <div class="p-6 space-y-4">
@@ -300,6 +307,102 @@
       </div>
     </div>
 
+    <!-- Modal: Lihat Butiran Pergerakan -->
+    <div v-if="showModalLihat" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+      <div class="bg-white w-full max-w-2xl rounded shadow-xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+
+        <div class="px-6 py-4 bg-[#003479] rounded-t">
+          <h3 class="text-sm font-bold text-white">Butiran Pergerakan</h3>
+          <p class="text-xs text-white/70 mt-0.5">{{ rekodLihat?.no_plat }} — <span class="capitalize">{{ rekodLihat?.nama_staf }}</span></p>
+        </div>
+
+        <div class="p-6 space-y-4" v-if="rekodLihat">
+
+          <!-- Maklumat Perjalanan -->
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Masa Keluar</p>
+              <p class="font-medium text-[#1A2332]">{{ formatTarikhPenuh(rekodLihat.masa_keluar) }}</p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Masa Masuk</p>
+              <p class="font-medium text-[#1A2332]">{{ rekodLihat.masa_masuk ? formatTarikhPenuh(rekodLihat.masa_masuk) : 'Belum Pulang' }}</p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Destinasi</p>
+              <p class="font-medium text-[#1A2332]">{{ rekodLihat.destinasi || '—' }}</p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Tujuan</p>
+              <p class="font-medium text-[#1A2332]">{{ rekodLihat.tujuan || '—' }}</p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Odometer</p>
+              <p class="font-medium text-[#1A2332]">{{ rekodLihat.odo_mula }} → {{ rekodLihat.odo_tamat || '...' }} km</p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-[#5A6672] uppercase tracking-wide mb-1">Jarak</p>
+              <p class="font-medium text-[#1A2332]">{{ rekodLihat.odo_tamat ? (rekodLihat.odo_tamat - rekodLihat.odo_mula).toFixed(1) + ' km' : '—' }}</p>
+            </div>
+          </div>
+
+          <!-- Kad TnG -->
+          <div v-if="rekodLihat.ambil_kad_tng || rekodLihat.baki_tng != null" class="border-t border-[#DFE3E8] pt-4">
+            <p class="text-xs font-bold text-[#003479] uppercase tracking-wide mb-2">Kad Touch 'n Go</p>
+            <div class="bg-[#F5F3FF] border border-[#DDD6FE] rounded p-3 text-sm">
+              <p class="text-xs text-[#5A6672]">No. Siri Kad: <span class="font-semibold text-[#1A2332]">{{ rekodLihat.no_siri_kad_tng || '—' }}</span></p>
+              <div class="flex items-center gap-2 mt-1.5">
+                <span v-if="rekodLihat.baki_tng_mula != null" class="text-[#5A6672]">RM {{ parseFloat(rekodLihat.baki_tng_mula).toFixed(2) }}</span>
+                <span v-if="rekodLihat.baki_tng_mula != null" class="text-[#5A6672]">➔</span>
+                <span class="font-bold text-[#5B21B6]">{{ rekodLihat.baki_tng != null ? `RM ${parseFloat(rekodLihat.baki_tng).toFixed(2)}` : 'Belum direkod' }}</span>
+                <span v-if="autoTopupLihat" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E]">⚡ Auto Topup</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resit Minyak -->
+          <div v-if="rekodLihat.ambil_kad_minyak || (rekodLihat.senarai_resit && rekodLihat.senarai_resit.length)" class="border-t border-[#DFE3E8] pt-4">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-xs font-bold text-[#003479] uppercase tracking-wide">Resit Minyak</p>
+              <p class="text-xs text-[#5A6672]">No. Siri Kad: <span class="font-semibold text-[#1A2332]">{{ rekodLihat.no_siri_kad_minyak || '—' }}</span></p>
+            </div>
+            <div v-if="rekodLihat.senarai_resit && rekodLihat.senarai_resit.length > 0" class="space-y-1.5">
+              <div v-for="r in rekodLihat.senarai_resit" :key="r.id" class="flex items-center justify-between bg-[#F8FAFC] border border-[#DFE3E8] rounded px-3 py-2 text-sm">
+                <span class="text-[#1A2332] font-medium">{{ r.no_resit || 'Tiada No. Resit' }}</span>
+                <span class="text-[#5A6672]">{{ r.liter ? parseFloat(r.liter).toFixed(2) + ' L' : '—' }}</span>
+                <span class="font-semibold text-[#003479]">RM {{ parseFloat(r.rm || 0).toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-end gap-4 pt-1 text-sm font-bold text-[#1A2332]">
+                <span>{{ totalLiterLihat.toFixed(2) }} L</span>
+                <span class="text-[#003479]">RM {{ totalRmLihat.toFixed(2) }}</span>
+              </div>
+            </div>
+            <p v-else class="text-xs text-[#8A94A6] italic">Tiada resit direkod bagi perjalanan ini.</p>
+          </div>
+
+          <!-- Log Harian (Operasi) -->
+          <div v-if="rekodLihat.senarai_harian && rekodLihat.senarai_harian.length > 0" class="border-t border-[#DFE3E8] pt-4">
+            <p class="text-xs font-bold text-[#003479] uppercase tracking-wide mb-2">Log Harian (Operasi)</p>
+            <div class="space-y-2">
+              <div v-for="h in rekodLihat.senarai_harian" :key="h.id" class="bg-[#F8FAFC] border border-[#DFE3E8] rounded p-3 text-xs">
+                <p class="font-semibold text-[#1A2332] mb-1">{{ formatTarikhPendek(h.tarikh) }} — {{ h.dari_lokasi || '—' }} → {{ h.ke_lokasi || '—' }}</p>
+                <div class="flex flex-wrap gap-x-4 gap-y-1 text-[#5A6672]">
+                  <span v-if="h.baki_tng != null">Baki TnG: <span class="font-semibold text-[#1A2332]">RM {{ parseFloat(h.baki_tng).toFixed(2) }}</span></span>
+                  <span v-if="h.jumlah_rm_minyak">Minyak: <span class="font-semibold text-[#1A2332]">RM {{ parseFloat(h.jumlah_rm_minyak).toFixed(2) }} ({{ parseFloat(h.jumlah_liter_minyak || 0).toFixed(2) }} L)</span></span>
+                  <span v-if="h.no_resit_minyak">No. Resit: <span class="font-semibold text-[#1A2332]">{{ h.no_resit_minyak }}</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex pt-4 border-t border-[#DFE3E8]">
+            <button @click="showModalLihat = false" class="flex-1 bg-[#F4F6FA] hover:bg-[#DFE3E8] text-[#5A6672] font-semibold text-sm py-2.5 rounded transition-colors">Tutup</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -312,6 +415,8 @@ const usersList = ref([])
 const kenderaanList = ref([])
 const showModalManual = ref(false)
 const showModalEdit = ref(false)
+const showModalLihat = ref(false)
+const rekodLihat = ref(null)
 
 const search = ref('')
 const filterKenderaan = ref('Semua')
@@ -375,6 +480,33 @@ const editForm = reactive({
 })
 
 const formatTarikhPendek = (str) => str ? new Date(str).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'
+const formatTarikhPenuh = (str) => str ? new Date(str).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'
+
+// Kira ikut data sebenar (resit/baki direkod), bukan setakat togol ambil_kad_minyak/tng semasa
+// daftar keluar — staf kadang lupa tanda togol tapi tetap isi minyak/guna TnG semasa daftar masuk.
+const adaIsiMinyak = (rekod) => {
+  if (parseFloat(rekod.jumlah_rm_minyak) > 0 || parseFloat(rekod.jumlah_liter_minyak) > 0) return true
+  return !!(rekod.senarai_resit && rekod.senarai_resit.length > 0) || !!(rekod.senarai_harian && rekod.senarai_harian.some(h => parseFloat(h.jumlah_rm_minyak) > 0))
+}
+const adaGunaTng = (rekod) => {
+  if (rekod.baki_tng != null) return true
+  return !!(rekod.senarai_harian && rekod.senarai_harian.some(h => h.baki_tng != null))
+}
+
+const bukaModalLihat = (rekod) => {
+  rekodLihat.value = rekod
+  showModalLihat.value = true
+}
+
+// Baki naik drpd baki permulaan trip = kad TnG auto topup RM500 (bila baki < RM50) tercetus dlm trip ini.
+const autoTopupLihat = computed(() => {
+  const r = rekodLihat.value
+  if (!r || r.baki_tng_mula == null || r.baki_tng == null) return false
+  return parseFloat(r.baki_tng) > parseFloat(r.baki_tng_mula)
+})
+
+const totalLiterLihat = computed(() => (rekodLihat.value?.senarai_resit || []).reduce((s, r) => s + (parseFloat(r.liter) || 0), 0))
+const totalRmLihat = computed(() => (rekodLihat.value?.senarai_resit || []).reduce((s, r) => s + (parseFloat(r.rm) || 0), 0))
 
 const fetchSemuaData = async () => {
   try {

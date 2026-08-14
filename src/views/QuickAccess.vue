@@ -43,7 +43,7 @@
             <label class="md3-field-label">Nama Staf</label>
             <select v-model="formKeluar.staff_id" class="md3-input" style="width:100%">
               <option value="" disabled>-- Pilih nama anda --</option>
-              <option v-for="s in senaraiStaff" :key="s.id" :value="s.id">{{ s.name }}</option>
+              <option v-for="s in senaraiStaff" :key="s.id" :value="s.id" class="capitalize">{{ s.name }}</option>
             </select>
           </div>
 
@@ -89,7 +89,7 @@
         <div v-else-if="kenderaan.status === 'Sedang Digunakan'" class="space-y-4">
           <div class="driver-info-box">
             <p class="driver-info-label">Sedang Digunakan Oleh</p>
-            <p class="driver-info-name">{{ kenderaan.pemandu_semasa || '—' }}</p>
+            <p class="driver-info-name capitalize">{{ kenderaan.pemandu_semasa || '—' }}</p>
             <p class="driver-info-dest">→ {{ kenderaan.destinasi_semasa || '—' }}</p>
           </div>
 

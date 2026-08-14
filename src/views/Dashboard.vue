@@ -19,7 +19,7 @@
       <!-- HOME TAB -->
       <div v-if="activeTab === 'home'" class="tab-content">
         <div class="mb-5">
-          <h2 class="greeting">Selamat datang, {{ currentUser?.name?.split(' ')[0] }}!</h2>
+          <h2 class="greeting">Selamat datang, <span class="capitalize">{{ currentUser?.name?.split(' ')[0] }}</span>!</h2>
           <p class="greeting-sub">
             {{ userSedangMemandu ? 'Kemas kini pergerakan harian atau tamatkan tugas.' : 'Pilih kenderaan yang tersedia.' }}
           </p>
@@ -62,7 +62,7 @@
                   <p class="driver-info-label">
                     {{ k.status === 'Sedang Digunakan' ? 'Pemandu Semasa' : 'Ditempah Oleh' }}
                   </p>
-                  <p class="driver-info-name">{{ k.status === 'Sedang Digunakan' ? k.pemandu : k.pembuat_tempahan }}</p>
+                  <p class="driver-info-name capitalize">{{ k.status === 'Sedang Digunakan' ? k.pemandu : k.pembuat_tempahan }}</p>
                   <p class="driver-info-dest">→ {{ k.status === 'Sedang Digunakan' ? k.destinasi : k.destinasi_booking }}</p>
                 </div>
               </div>
@@ -128,7 +128,7 @@
           <div class="profile-avatar">
             {{ currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'U' }}
           </div>
-          <h2 class="profile-name">{{ currentUser?.name }}</h2>
+          <h2 class="profile-name capitalize">{{ currentUser?.name }}</h2>
           <p class="profile-email">{{ currentUser?.email }}</p>
           <div class="profile-info-row">
             <span class="profile-info-label">Stesen</span>

@@ -62,7 +62,7 @@
         <div :class="['status-info-block', statusInfoClass(aset.status)]">
           <template v-if="aset.status === 'Sedang Digunakan'">
             <p class="status-info-label status-info-label--guna">Pemandu Semasa</p>
-            <p class="status-info-name">{{ aset.pemandu_semasa || '—' }}</p>
+            <p class="status-info-name capitalize">{{ aset.pemandu_semasa || '—' }}</p>
             <p class="status-info-dest">→ {{ aset.destinasi_semasa || '—' }}</p>
             <button @click="bukaModalPemulangan(aset)" class="rekod-pemulangan-btn">
               Sudah Dipulangkan? Rekod Sekarang
@@ -70,7 +70,7 @@
           </template>
           <template v-else-if="aset.status === 'Ditempah'">
             <p class="status-info-label status-info-label--tempah">Tempahan Aktif</p>
-            <p class="status-info-name">{{ aset.pembuat_tempahan || '—' }}</p>
+            <p class="status-info-name capitalize">{{ aset.pembuat_tempahan || '—' }}</p>
             <p class="status-info-dest">→ {{ aset.destinasi_booking || '—' }}</p>
           </template>
           <template v-else-if="aset.status === 'Tersedia'">
@@ -91,7 +91,7 @@
           <div class="space-y-1 max-h-20 overflow-y-auto">
             <div v-for="b in aset.senarai_tempahan" :key="b.id" class="booking-item">
               <div class="flex-1 min-w-0">
-                <p class="booking-name">{{ b.pembuat_tempahan }}</p>
+                <p class="booking-name capitalize">{{ b.pembuat_tempahan }}</p>
                 <p class="booking-dest">{{ b.destinasi }}</p>
               </div>
               <span class="booking-date">{{ formatTarikhPendek(b.tarikh_mula) }}</span>

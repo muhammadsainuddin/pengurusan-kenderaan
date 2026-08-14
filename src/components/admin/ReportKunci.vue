@@ -50,7 +50,7 @@
             <tr v-for="(row, idx) in laporanList" :key="'kunci'+row.id" class="hover:bg-[#F8FAFC] transition-colors">
               <td class="px-4 py-3 text-xs text-[#5A6672] font-medium">{{ idx + 1 }}</td>
               <td class="px-4 py-3">
-                <p class="font-semibold text-[#1A2332] text-sm">{{ row.nama_staf }}</p>
+                <p class="font-semibold text-[#1A2332] text-sm capitalize">{{ row.nama_staf }}</p>
                 <p class="text-xs text-[#5A6672] mt-0.5">{{ row.jabatan }}</p>
               </td>
               <td class="px-4 py-3">
